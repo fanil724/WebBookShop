@@ -1,0 +1,69 @@
+﻿@model List<WebBookShop.Models.Discounts>;
+
+<partial name="AdminPanel"></partial>
+
+
+@if (ViewBag.Comment != null)
+{
+    <h3 class="text-primary">"@ViewBag.Comment"</h3>
+}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Добавить скидку
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Данные скидки</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddDiscount" asp-controller="Admin" method="post">
+                    <div class="form-group">
+                        <label for="Name">жанр скидки</label>
+                        <select class="form-select form-select-lg mb-3" name="Name" aria-label=".form-select-lg пример">                            
+                            @foreach (var i in ViewBag.Genre)
+                            {
+                                <option name="Name" selected>@i.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="FIOAvtora">Имя автора</label>
+                        <input type="text" class="form-control" name="dicount">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить скидку</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Жанр</th>
+            <th scope="col">скидка</th>
+            <th> Удалить скидку</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (Discounts item in (List<Discounts>)Model)
+        {
+            <tr>
+                <th scope="col">@(Model.IndexOf(item) + 1)</th>
+                <th scope="col">@item.Genre</th>
+                <th scope="col">@item.Discoute</th>
+                <th scope="col">
+                    <a asp-action="DelDiscount" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/Icon/minus.png" width="50" height="50"></a>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

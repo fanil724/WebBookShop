@@ -1,0 +1,138 @@
+﻿@model List<WebBookShop.Models.Book>;
+
+<partial name="AdminPanel"></partial>
+
+@if (ViewBag.Comment != null)
+{
+    <h3 class="text-primary">"@ViewBag.Comment"</h3>
+}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Добавить книгу
+</button>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Данные книги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddBook" asp-controller="Admin" method="post">
+                    <div class="form-group">
+                        <label for="Name">Наименование книги</label>
+                        <input type="text" class="form-control" name="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="FIOAvtora">Имя автора</label>
+                        <input type="text" class="form-control" name="FIOAvtora">
+                    </div>
+                    <div class="form-group">
+                        <label for="NameOfThePublisher">Издательство</label>
+                        <input type="text" class="form-control" name="NameOfThePublisher">
+                    </div>
+                    <div class="form-group">
+                        <label for="PageNumber">Количество страниц</label>
+                        <input type="number" class="form-control" name="PageNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="Genre">Жанр</label>
+                        <select class="form-select form-select-lg mb-3" name="Genre" aria-label=".form-select-lg пример">
+                            @foreach (var i in ViewBag.Genre)
+                            {
+                                <option name="Name" selected>@i.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="PublicationYear">Год публикации</label>
+                        <input type="text" class="form-control" name="PublicationYear">
+                    </div>
+                    <div class="form-group">
+                        <label for="CostPrice">Цена закупки</label>
+                        <input type="number" class="form-control" name="CostPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="SellingPrice">Цена продажи</label>
+                        <input type="number" class="form-control" name="SellingPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="BookContinuation">Серия книг</label>
+                        <input type="text" class="form-control" name="BookContinuation">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить книгу</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Count">
+    Добавить количество книг
+</button>
+<!-- Modal -->
+<div class="modal fade" id="Count" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Данные книги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="BooksCount" asp-controller="Admin" method="post">
+                    <div class="form-group">
+                        <label for="Name">Название книги</label>
+                        <select class="form-select form-select-lg mb-3" name="name" aria-label=".form-select-lg пример">
+                            @foreach (var i in (List<Book>)Model)
+                            {
+                                <option  selected>@i.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="BookContinuation">Количество книг</label>
+                        <input type="text" class="form-control" name="count">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить количество книг</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">ФИО автора</th>
+            <th scope="col">Наименование издательства</th>
+            <th scope="col">Количество страниц</th>
+            <th scope="col">год публикации</th>
+            <th scope="col">цена</th>
+            <th scope="col">Продолжение книги</th>          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Book item in (List<Book>)Model)
+        {
+            <tr>
+                <th scope="col">@(Model.IndexOf(item) + 1)</th>
+                <th scope="col">@item.Name</th>
+                <th scope="col">@item.FIOAvtora</th>
+                <th scope="col">@item.NameOfThePublisher</th>
+                <th scope="col">@item.PageNumber</th>
+                <th scope="col">@item.PublicationYear</th>
+                <th scope="col">@item.SellingPrice</th>
+                <th scope="col">@item.BookContinuation</th>               
+            </tr>
+        }
+    </tbody>
+</table>
+
+

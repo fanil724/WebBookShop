@@ -1,0 +1,99 @@
+﻿@model List<WebBookShop.Models.Book>;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+
+    @if (ViewBag.Status == "korzina")
+    {
+        <h1 class="display-4">Корзина</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Избранное</h1>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <h4 class="text-danger">@ViewBag.Error</h4>
+    }
+    @if (ViewBag.Book != null)
+    {
+        @if (ViewBag.Book.Count > 0)
+        {
+            <ul>
+                @foreach (var i in (List<Book>)ViewBag.Book)
+                {
+                    <li class="text-danger">@i.Name</li>
+                }
+            </ul>
+
+        }
+    }
+
+
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">ФИО автора</th>
+                <th scope="col">Наименование издательства</th>
+                <th scope="col">Количество страниц</th>
+                <th scope="col">год публикации</th>
+                <th scope="col">цена</th>
+                <th scope="col">Продолжение книги</th>
+                <th scope="col"> </th>
+                <th scope="col"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Book item in (List<Book>)Model)
+            {
+                <tr>
+                    <th scope="col">@(Model.IndexOf(item) + 1)</th>
+                    <th scope="col">@item.Name</th>
+                    <th scope="col">@item.FIOAvtora</th>
+                    <th scope="col">@item.NameOfThePublisher</th>
+                    <th scope="col">@item.PageNumber</th>
+                    <th scope="col">@item.PublicationYear</th>
+                    <th scope="col">@item.SellingPrice</th>
+                    <th scope="col">@item.BookContinuation</th>
+
+                    @if (ViewBag.Status == "korzina")
+                    {
+                        <th scope="col">
+                            <a asp-action="DelBasket" asp-controller="ShoppingBasket" asp-route-idbook="@item.Id" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                                <img src="~/Icon/delbascet.png" width="50" height="50" />
+                            </a>
+                        </th>
+                        <th scope="col">
+                            <a asp-action="AddFavorite" asp-controller="ShoppingBasket" asp-route-idbook="@item.Id" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                                <img src="~/Icon/addfavorit.png" width="50" height="50" />
+                            </a>
+                        </th>
+                    }
+                    else
+                    {
+                        <th scope="col">
+                            <a asp-action="AddBasket" asp-controller="ShoppingBasket" asp-route-idbook="@item.Id" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                                <img src="~/Icon/addbascet.png" width="50" height="50" />
+                            </a>
+                        </th>
+                        <th scope="col">
+                            <a asp-action="DelFavorite" asp-controller="ShoppingBasket" asp-route-idbook="@item.Id" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                                <img src="~/Icon/deletefavourites.png" width="50" height="50" />
+                            </a>
+                        </th>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (ViewBag.Status == "korzina")
+    {
+        <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingBasket" asp-action="Buy" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">Купить</a>
+    }
+</div>

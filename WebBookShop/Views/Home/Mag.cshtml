@@ -1,0 +1,65 @@
+﻿@model List<WebBookShop.Models.Book>;
+
+
+<h4 class="text-center">
+    <h1 class="display-4">Добропожаловать в магазин</h1>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                Наименование
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-light bg-light" style="display:flex; justify-content:end">
+        <form style="display:inline-flex" method="post" asp-action="Mag" asp-controller="Home">
+            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">ФИО автора</th>
+                <th scope="col">Наименование издательства</th>
+                <th scope="col">Количество страниц</th>
+                <th scope="col">год публикации</th>
+                <th scope="col">цена</th>
+                <th scope="col">Продолжение книги</th>
+                <th scope="col"> </th>
+                <th scope="col"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Book item in (List<Book>)Model)
+            {
+                <tr>
+                    <th scope="col">@(Model.IndexOf(item) + 1)</th>
+                    <th scope="col">@item.Name</th>
+                    <th scope="col">@item.FIOAvtora</th>
+                    <th scope="col">@item.NameOfThePublisher</th>
+                    <th scope="col">@item.PageNumber</th>
+                    <th scope="col">@item.PublicationYear</th>
+                    <th scope="col">@item.SellingPrice</th>
+                    <th scope="col">@item.BookContinuation</th>
+                    <th scope="col">
+                        <a asp-action="AddBasket" asp-controller="Home" asp-route-idbook="@item.Id"
+                        asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                            <img src="~/Icon/addbascet.png" width="50" height="50" />
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="AddFavorite" asp-controller="Home" asp-route-idbook="@item.Id" asp-route-iduser="@User.Claims.FirstOrDefault(x => x.Type == "USERID")?.Value">
+                            <img src="~/Icon/addfavorit.png" width="50" height="50" />
+                        </a>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+
+
